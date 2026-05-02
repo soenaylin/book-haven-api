@@ -1,8 +1,17 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import-x';
+import prettierPlugin from 'eslint-plugin-prettier';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import { defineConfig } from 'eslint/config';
+
+// Recreate __dirname for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig([
 	/**
@@ -17,7 +26,7 @@ export default defineConfig([
 	 */
 	{
 		files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
-		plugins: { js },
+		plugins: { js, 'import-x': importPlugin, prettier: prettierPlugin },
 		extends: ['js/recommended'],
 		rules: {
 			/**
@@ -29,11 +38,12 @@ export default defineConfig([
 			/**
 			 * Import Order
 			 */
-			'import/order': [
+			'import-x/order': [
 				'warn',
 				{
 					groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
 					'newlines-between': 'always',
+
 					alphabetize: {
 						order: 'asc',
 						caseInsensitive: true
@@ -79,7 +89,17 @@ export default defineConfig([
 				}
 			]
 		},
-		languageOptions: { globals: globals.node }
+		languageOptions: {
+			globals: globals.node,
+			parserOptions: {
+				// Tells ESLint to use TypeScript's type information
+				projectService: {
+					allowDefaultProject: ['eslint.config.mts', 'prisma.config.ts']
+				},
+				// Points to your tsconfig (usually in the same directory)
+				tsconfigRootDir: __dirname // Use the manual __dirname here
+			}
+		}
 	},
 
 	/**
