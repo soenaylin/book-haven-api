@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"target": "ES2022",
+		"types": ["node"],
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"exactOptionalPropertyTypes": true
+	},
+	"include": ["eslint.config.mts", "prisma.config.ts"]
+}
