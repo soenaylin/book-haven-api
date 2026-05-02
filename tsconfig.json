@@ -7,13 +7,12 @@
 
 		// Environment Settings
 		// See also https://aka.ms/tsconfig/module
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
 		"target": "ES2022",
-		"types": [],
+		"types": ["node"],
 		// For nodejs:
 		"lib": ["ES2022"],
-		// "types": ["node"],
 		// and npm install -D @types/node
 
 		// Other Outputs
@@ -23,7 +22,7 @@
 
 		// Stricter Typechecking Options
 		"noUncheckedIndexedAccess": true,
-		"exactOptionalPropertyTypes": true,
+		// "exactOptionalPropertyTypes": true,
 
 		// Style Options
 		// "noImplicitReturns": true,
@@ -42,9 +41,9 @@
 		"isolatedModules": true,
 		// "noUncheckedSideEffectImports": true,
 		// "moduleDetection": "force",
-		"skipLibCheck": true,
+		// "skipLibCheck": true,
 		"resolveJsonModule": true
 	},
-	"include": ["src/**/*.ts"],
+	"include": ["src"],
 	"exclude": ["node_modules", "dist"]
 }
