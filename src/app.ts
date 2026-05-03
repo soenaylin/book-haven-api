@@ -1,1 +1,1 @@
-const testValue: string = 123;
+const testValue: string = '123';
