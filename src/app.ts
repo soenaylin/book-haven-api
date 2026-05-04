@@ -1,1 +1,1 @@
-const _testValue: string = 123;
+const _testValue: number = 123;
