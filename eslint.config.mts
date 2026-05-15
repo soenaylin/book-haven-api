@@ -18,7 +18,14 @@ export default defineConfig([
 	 * Global ignores
 	 */
 	{
-		ignores: ['dist/**', 'build/**', 'coverage/**', 'node_modules/**', '*.config.js', '*.config.cjs']
+		ignores: [
+			'dist/**',
+			'build/**',
+			'coverage/**',
+			'node_modules/**',
+			'*.config.js',
+			'*.config.cjs'
+		]
 	},
 
 	/**
@@ -32,7 +39,7 @@ export default defineConfig([
 			/**
 			 * General Code Quality
 			 */
-			'no-console': 'warn',
+			// 'no-console': 'warn',
 			'no-debugger': 'warn',
 
 			/**
@@ -41,7 +48,12 @@ export default defineConfig([
 			'import-x/order': [
 				'warn',
 				{
-					groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
+					groups: [
+						'builtin',
+						'external',
+						'internal',
+						['parent', 'sibling', 'index']
+					],
 					'newlines-between': 'always',
 
 					alphabetize: {
@@ -84,7 +96,7 @@ export default defineConfig([
 					endOfLine: 'auto',
 					useTabs: true,
 					singleQuote: true,
-					printWidth: 120,
+					printWidth: 80,
 					jsxSingleQuote: true
 				}
 			]
@@ -94,7 +106,10 @@ export default defineConfig([
 			parserOptions: {
 				// Tells ESLint to use TypeScript's type information
 				projectService: {
-					allowDefaultProject: ['eslint.config.mts', 'prisma.config.ts']
+					allowDefaultProject: [
+						'eslint.config.mts',
+						'prisma.config.ts'
+					]
 				},
 				// Points to your tsconfig (usually in the same directory)
 				tsconfigRootDir: __dirname // Use the manual __dirname here
