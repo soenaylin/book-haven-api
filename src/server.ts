@@ -1,5 +1,6 @@
 import http from 'node:http';
 
+import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 
 import app from './app.js';
@@ -20,13 +21,17 @@ const shutdown = (reason: string, error?: unknown) => {
 	console.error(reason, error ?? '');
 	server.close(() => {
 		// Handled the async prisma operation as a standard promise chain
-		prisma
-			.$disconnect()
-			.then(() => process.exit(error ? 1 : 0))
-			.catch((err) => {
-				console.error('Error during database disconnect:', err);
-				process.exit(1);
-			});
+		if (prisma instanceof PrismaClient) {
+			prisma
+				.$disconnect()
+				.then(() => process.exit(error ? 1 : 0))
+				.catch((err) => {
+					console.error('Error during database disconnect:', err);
+					process.exit(1);
+				});
+		} else {
+			process.exit(error ? 1 : 0);
+		}
 	});
 };
 
