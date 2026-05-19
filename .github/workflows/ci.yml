@@ -26,6 +26,9 @@ jobs:
               run: npm ci
 
             - name: Generate Prisma Client
+              env:
+                  PRISMA_CLIENT_ENGINE_TYPE: 'library'
+                  DATABASE_URL: 'file:./dev.db'
               run: npx prisma generate
 
             - name: Run ESLint
