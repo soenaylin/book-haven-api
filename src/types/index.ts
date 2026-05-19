@@ -28,6 +28,8 @@ export type AppError = Error & {
 	statusCode?: number;
 };
 
+/* eslint-disable @typescript-eslint/no-namespace */
+
 declare global {
 	namespace Express {
 		interface Request {

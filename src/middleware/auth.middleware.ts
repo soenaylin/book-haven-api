@@ -1,9 +1,10 @@
-import jwt from 'jsonwebtoken';
-import type { NextFunction, Request, Response } from 'express';
 import type { Role } from '@prisma/client';
+import type { NextFunction, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+
 import prisma from '../config/prisma.js';
-import { errorResponse } from '../utils/response.js';
 import type { JwtPayload } from '../types/index.js';
+import { errorResponse } from '../utils/response.js';
 
 export const protect = async (
 	req: Request,

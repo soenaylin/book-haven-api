@@ -1,4 +1,5 @@
 import type { Response } from 'express';
+
 import type { ApiFailure, ApiSuccess } from '../types/index.js';
 
 export const successResponse = <T>(

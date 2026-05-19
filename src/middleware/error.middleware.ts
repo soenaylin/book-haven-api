@@ -1,7 +1,8 @@
 import { Prisma } from '@prisma/client';
 import type { ErrorRequestHandler } from 'express';
-import { errorResponse } from '../utils/response.js';
+
 import type { AppError } from '../types/index.js';
+import { errorResponse } from '../utils/response.js';
 
 const errorMiddleware: ErrorRequestHandler = (
 	err: AppError,
