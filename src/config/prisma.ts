@@ -1,4 +1,10 @@
+import { PrismaLibSql } from '@prisma/adapter-libsql';
 import { PrismaClient } from '@prisma/client';
+
+// Pass the config object directly to the adapter instead of a pre-created client instance
+const adapter = new PrismaLibSql({
+	url: process.env.DATABASE_URL ?? 'file:./dev.db'
+});
 
 const globalForPrisma = globalThis as unknown as {
 	prisma?: PrismaClient;
@@ -7,6 +13,7 @@ const globalForPrisma = globalThis as unknown as {
 const prisma =
 	globalForPrisma.prisma ??
 	new PrismaClient({
+		adapter,
 		log:
 			process.env.NODE_ENV === 'development'
 				? ['query', 'error', 'warn']
