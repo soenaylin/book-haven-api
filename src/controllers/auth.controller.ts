@@ -69,7 +69,9 @@ const updateProfile = async (
 	next: NextFunction
 ) => {
 	try {
-		if (!req.user) throw createError('Not authorized', 401);
+		if (!req.user || typeof req.user !== 'object' || !('id' in req.user)) {
+			throw createError('Not authorized', 401);
+		}
 		const user = await authService.updateProfile(
 			req.user.id,
 			req.body as UpdateProfileInput

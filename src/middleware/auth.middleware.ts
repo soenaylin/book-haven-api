@@ -3,7 +3,7 @@ import type { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import prisma from '../config/prisma.js';
-import type { JwtPayload, AuthUser } from '../types/index.js';
+import type { JwtPayload } from '../types/index.js';
 import { errorResponse } from '../utils/response.js';
 
 export const protect = async (
@@ -38,7 +38,7 @@ export const protect = async (
 			return errorResponse(res, 'Not authorized, user not found', 401);
 		}
 
-		(req.user as AuthUser) = user;
+		req.user = user;
 		return next();
 	} catch {
 		return errorResponse(res, 'Not authorized, token failed', 401);
