@@ -12,7 +12,7 @@ interface GlobalWithPrisma {
 
 const globalForPrisma = globalThis as GlobalWithPrisma;
 
-const prisma =
+const prisma: PrismaClient =
 	globalForPrisma.prisma ??
 	new PrismaClient({
 		adapter,
