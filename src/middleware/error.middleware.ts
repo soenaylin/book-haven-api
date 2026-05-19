@@ -5,7 +5,7 @@ import type { AppError } from '../types/index.js';
 import { errorResponse } from '../utils/response.js';
 
 const errorMiddleware: ErrorRequestHandler = (
-	err: AppError,
+	err: unknown,
 	_req,
 	res,
 	_next
@@ -25,12 +25,16 @@ const errorMiddleware: ErrorRequestHandler = (
 			return errorResponse(res, 'Record not found', 404);
 		}
 	}
-
-	return errorResponse(
-		res,
-		err.message || 'Internal Server Error',
-		err.statusCode || 500
-	);
+	const message =
+		err instanceof Error ? err.message : 'Internal Server Error';
+	const statusCode =
+		typeof err === 'object' &&
+		err !== null &&
+		'statusCode' in err &&
+		typeof (err as AppError).statusCode === 'number'
+			? (err as AppError).statusCode
+			: 500;
+	return errorResponse(res, message, statusCode);
 };
 
 export default errorMiddleware;

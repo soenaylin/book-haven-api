@@ -27,8 +27,9 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 			'User registered successfully',
 			201
 		);
-	} catch (error) {
-		return next(error);
+	} catch (error: unknown) {
+		if (error instanceof Error) return next(error);
+		return next(new Error('Unknown error occurred in register'));
 	}
 };
 
@@ -43,8 +44,9 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
 		const result = await authService.login(email, password);
 		return successResponse(res, result, 'Login successful');
-	} catch (error) {
-		return next(error);
+	} catch (error: unknown) {
+		if (error instanceof Error) return next(error);
+		return next(new Error('Unknown error occurred in login'));
 	}
 };
 
@@ -55,8 +57,9 @@ const getMe = (req: Request, res: Response, next: NextFunction) => {
 			{ user: req.user },
 			'User profile retrieved'
 		);
-	} catch (error) {
-		return next(error);
+	} catch (error: unknown) {
+		if (error instanceof Error) return next(error);
+		return next(new Error('Unknown error occurred in getMe'));
 	}
 };
 
@@ -72,8 +75,9 @@ const updateProfile = async (
 			req.body as UpdateProfileInput
 		);
 		return successResponse(res, { user }, 'Profile updated successfully');
-	} catch (error) {
-		return next(error);
+	} catch (error: unknown) {
+		if (error instanceof Error) return next(error);
+		return next(new Error('Unknown error occurred in updateProfile'));
 	}
 };
 
