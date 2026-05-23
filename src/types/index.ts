@@ -1,4 +1,4 @@
-import type { Role } from '@prisma/client';
+import type { Role, Book, Category } from '@prisma/client';
 
 export type AuthUser = {
 	id: string;
@@ -27,6 +27,13 @@ export type ApiFailure = {
 export type AppError = Error & {
 	statusCode?: number;
 };
+
+export type PaginationQuery = {
+	page?: string | number;
+	limit?: string | number;
+};
+
+export type { Book, Category };
 
 /* eslint-disable @typescript-eslint/no-namespace */
 
