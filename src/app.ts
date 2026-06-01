@@ -2,6 +2,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
+import authRoutes from './routes/auth.routes.js';
+import bookRoutes from './routes/book.routes.js';
+import errorMiddleware from './middleware/error.middleware.js';
 
 dotenv.config();
 
@@ -20,6 +23,9 @@ app.get('/api/health', (_req, res) => {
 	res.json({ status: 'ok', message: 'Bookhaven API is running' });
 });
 
-// app.use(errorMiddleware);
+app.use('/api/auth', authRoutes);
+app.use('/api/books', bookRoutes);
+
+app.use(errorMiddleware);
 
 export default app;
