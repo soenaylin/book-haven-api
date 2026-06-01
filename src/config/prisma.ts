@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 // Pass the config object directly to the adapter instead of a pre-created client instance
 const adapter = new PrismaLibSql({
-	url: process.env.DATABASE_URL ?? 'file:./dev.db'
+	url: process.env.DATABASE_URL ?? 'file:./prisma/dev.db'
 });
 
 interface GlobalWithPrisma {

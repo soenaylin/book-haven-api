@@ -6,12 +6,8 @@ import { authorize, protect } from '../middleware/auth.middleware.js';
 const router = express.Router();
 
 router.get('/', bookController.getAllBooks);
-router.get('/:id', bookController.getBookById);
-router.post('/', protect, authorize('ADMIN'), bookController.createBook);
-router.put('/:id', protect, authorize('ADMIN'), bookController.updateBook);
-router.delete('/:id', protect, authorize('ADMIN'), bookController.deleteBook);
-
 router.get('/categories', bookController.getAllCategories);
+
 router.post(
 	'/categories',
 	protect,
@@ -30,5 +26,10 @@ router.delete(
 	authorize('ADMIN'),
 	bookController.deleteCategory
 );
+
+router.get('/:id', bookController.getBookById);
+router.post('/', protect, authorize('ADMIN'), bookController.createBook);
+router.put('/:id', protect, authorize('ADMIN'), bookController.updateBook);
+router.delete('/:id', protect, authorize('ADMIN'), bookController.deleteBook);
 
 export default router;
