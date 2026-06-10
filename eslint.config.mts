@@ -108,7 +108,8 @@ export default defineConfig([
 				projectService: {
 					allowDefaultProject: [
 						'eslint.config.mts',
-						'prisma.config.ts'
+						'prisma.config.ts',
+						'prisma/seed.ts'
 					]
 				},
 				// Points to your tsconfig (usually in the same directory)
