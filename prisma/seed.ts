@@ -1,7 +1,6 @@
-import { type Prisma } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 import prisma from '../src/config/prisma.js';
-import bcrypt from 'bcryptjs';
 
 async function main() {
 	await prisma.book.deleteMany();
