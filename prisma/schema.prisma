@@ -14,7 +14,7 @@ model User {
     role      Role     @default(USER)
     createdAt DateTime @default(now())
     // addresses      Address[]
-    // cart           Cart?
+    cart           Cart?
     // notifications  Notification[]
     // orders         Order[]
     // recentlyViewed RecentlyViewed[]
@@ -35,7 +35,7 @@ model Book {
     createdAt   DateTime @default(now())
     salesCount  Int      @default(0)
     category       Category         @relation(fields: [categoryId], references: [id])
-    // cartItems      CartItem[]
+    cartItems      CartItem[]
     // orderItems     OrderItem[]
     // recentlyViewed RecentlyViewed[]
     // reviews        Review[]
@@ -46,6 +46,24 @@ model Category {
     id    String @id @default(uuid())
     name  String @unique
     books Book[]
+}
+
+model Cart {
+    id     String     @id @default(uuid())
+    userId String     @unique
+    user   User       @relation(fields: [userId], references: [id])
+    items  CartItem[]
+}
+
+model CartItem {
+    id       String @id @default(uuid())
+    cartId   String
+    bookId   String
+    quantity Int
+    cart     Cart   @relation(fields: [cartId], references: [id])
+    book     Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+    @@unique([cartId, bookId])
 }
 
 enum Role {
