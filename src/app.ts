@@ -2,9 +2,10 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
+
+import errorMiddleware from './middleware/error.middleware.js';
 import authRoutes from './routes/auth.routes.js';
 import bookRoutes from './routes/book.routes.js';
-import errorMiddleware from './middleware/error.middleware.js';
 
 dotenv.config();
 
