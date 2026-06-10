@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import errorMiddleware from './middleware/error.middleware.js';
 import authRoutes from './routes/auth.routes.js';
 import bookRoutes from './routes/book.routes.js';
+import cartRoutes from './routes/cart.routes.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
+app.use('/api/cart', cartRoutes);
 
 app.use(errorMiddleware);
 
