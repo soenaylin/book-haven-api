@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes.js';
 import bookRoutes from './routes/book.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 import notificationRoutes from './routes/notification.routes.js';
+import promoRoutes from './routes/promo.routes.js';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/promo', promoRoutes);
 
 app.use(errorMiddleware);
 

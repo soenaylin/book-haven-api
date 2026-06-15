@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+
 import notificationService from '../services/notification.service.js';
 import { createError } from '../utils/errors.js';
 import { successResponse } from '../utils/response.js';
