@@ -13,7 +13,7 @@ model User {
     password      String
     role          Role           @default(USER)
     createdAt     DateTime       @default(now())
-    // addresses      Address[]
+    addresses      Address[]
     cart          Cart?
     // notifications  Notification[]
     // orders         Order[]
@@ -81,6 +81,18 @@ model PromoCode {
     usageCount     Int       @default(0)
     usageLimit     Int?
     createdAt      DateTime  @default(now())
+}
+
+model Address {
+    id          String  @id @default(uuid())
+    userId      String
+    fullName    String
+    phone       String
+    addressLine String
+    city        String
+    country     String
+    user        User    @relation(fields: [userId], references: [id])
+    // orders      Order[]
 }
 
 model Notification {
