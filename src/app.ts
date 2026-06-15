@@ -4,6 +4,7 @@ import express from 'express';
 import morgan from 'morgan';
 
 import errorMiddleware from './middleware/error.middleware.js';
+import addressRoutes from './routes/address.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import bookRoutes from './routes/book.routes.js';
 import cartRoutes from './routes/cart.routes.js';
@@ -30,6 +31,7 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/addresses', addressRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/promo', promoRoutes);
 
