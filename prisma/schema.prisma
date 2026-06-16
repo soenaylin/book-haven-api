@@ -13,10 +13,10 @@ model User {
     password      String
     role          Role           @default(USER)
     createdAt     DateTime       @default(now())
-    addresses      Address[]
+    addresses     Address[]
     cart          Cart?
     // notifications  Notification[]
-    // orders         Order[]
+    orders        Order[]
     // recentlyViewed RecentlyViewed[]
     // reviews        Review[]
     // wishlist       WishlistItem[]
@@ -24,20 +24,20 @@ model User {
 }
 
 model Book {
-    id          String     @id @default(uuid())
+    id          String      @id @default(uuid())
     title       String
-    author      String     @default("Unknown Author")
+    author      String      @default("Unknown Author")
     description String
     price       Float
     isbn        String?
     stock       Int
     coverImage  String
     categoryId  String
-    createdAt   DateTime   @default(now())
-    salesCount  Int        @default(0)
-    category    Category   @relation(fields: [categoryId], references: [id])
+    createdAt   DateTime    @default(now())
+    salesCount  Int         @default(0)
+    category    Category    @relation(fields: [categoryId], references: [id])
     cartItems   CartItem[]
-    // orderItems     OrderItem[]
+    orderItems  OrderItem[]
     // recentlyViewed RecentlyViewed[]
     // reviews        Review[]
     // wishlist       WishlistItem[]
@@ -67,6 +67,22 @@ model CartItem {
     @@unique([cartId, bookId])
 }
 
+model Order {
+    id             String      @id @default(uuid())
+    userId         String
+    status         OrderStatus @default(PENDING)
+    subtotal       Float       @default(0)
+    shippingCost   Float       @default(0)
+    discountAmount Float       @default(0)
+    totalPrice     Float
+    promoCode      String?
+    addressId      String
+    createdAt      DateTime    @default(now())
+    user           User        @relation(fields: [userId], references: [id])
+    address        Address     @relation(fields: [addressId], references: [id])
+    items          OrderItem[]
+}
+
 model PromoCode {
     id             String    @id @default(uuid())
     code           String    @unique
@@ -83,6 +99,16 @@ model PromoCode {
     createdAt      DateTime  @default(now())
 }
 
+model OrderItem {
+    id       String @id @default(uuid())
+    orderId  String
+    bookId   String
+    price    Float
+    quantity Int
+    order    Order  @relation(fields: [orderId], references: [id])
+    book     Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}
+
 model Address {
     id          String  @id @default(uuid())
     userId      String
@@ -92,7 +118,7 @@ model Address {
     city        String
     country     String
     user        User    @relation(fields: [userId], references: [id])
-    // orders      Order[]
+    orders      Order[]
 }
 
 model Notification {
@@ -115,4 +141,12 @@ enum PromoType {
 enum Role {
     USER
     ADMIN
+}
+
+enum OrderStatus {
+    PENDING
+    PAID
+    SHIPPED
+    DELIVERED
+    CANCELLED
 }
