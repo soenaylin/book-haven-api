@@ -8,8 +8,8 @@ import addressRoutes from './routes/address.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import bookRoutes from './routes/book.routes.js';
 import cartRoutes from './routes/cart.routes.js';
-import orderRoutes from './routes/order.routes.js';
 import notificationRoutes from './routes/notification.routes.js';
+import orderRoutes from './routes/order.routes.js';
 import promoRoutes from './routes/promo.routes.js';
 
 dotenv.config();
