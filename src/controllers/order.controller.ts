@@ -1,10 +1,23 @@
 import type { OrderStatus } from '@prisma/client';
 import type { NextFunction, Request, Response } from 'express';
+
 import orderService from '../services/order.service.js';
 import { createError } from '../utils/errors.js';
 import { successResponse } from '../utils/response.js';
 
-const createOrder = async (req: Request, res: Response, next: NextFunction) => {
+interface CreateOrderRequest extends Request {
+	body: {
+		addressId: string;
+		items?: Array<{ bookId: string; quantity: number }>;
+		promoCode?: string;
+	};
+}
+
+const createOrder = async (
+	req: CreateOrderRequest,
+	res: Response,
+	next: NextFunction
+) => {
 	try {
 		if (!req.user) throw createError('Not authorized', 401);
 		const { addressId, items, promoCode } = req.body;

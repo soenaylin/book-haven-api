@@ -1,8 +1,9 @@
 import type { OrderStatus, Prisma, Role } from '@prisma/client';
-import prisma from '../config/prisma.js';
-import { createError, toPositiveInt } from '../utils/errors';
+
 import cartService from './cart.service.js';
 import promoService from './promo.service.js';
+import prisma from '../config/prisma.js';
+import { createError, toPositiveInt } from '../utils/errors';
 
 type DirectOrderItem = {
 	bookId: string;
@@ -123,7 +124,7 @@ class OrderService {
 			}
 
 			for (const item of itemsToProcess) {
-				const updatedBook = await tx.book.update({
+				await tx.book.update({
 					where: { id: item.bookId },
 					data: {
 						stock: { decrement: item.quantity },
