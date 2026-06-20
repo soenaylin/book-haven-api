@@ -34,6 +34,7 @@ class OrderService {
 		userRole: Role = 'USER'
 	) {
 		const itemsToProcess: ItemToProcess[] = [];
+		let cartId: string | null = null;
 
 		if (directItems?.length) {
 			for (const item of directItems) {
@@ -58,6 +59,7 @@ class OrderService {
 			const cart = await cartService.getCart(userId);
 			if (!cart.items.length) throw createError('Cart is empty', 400);
 			itemsToProcess.push(...cart.items);
+			cartId = cart.id;
 		}
 
 		const address = await prisma.address.findFirst({
@@ -135,9 +137,8 @@ class OrderService {
 				// TODO: Send notification to admin when stock is low
 			}
 
-			if (!directItems?.length) {
-				const cart = await cartService.getCart(userId);
-				await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+			if (!directItems?.length && cartId) {
+				await tx.cartItem.deleteMany({ where: { cartId } });
 			}
 
 			return newOrder;
