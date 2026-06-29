@@ -5,6 +5,7 @@ import morgan from 'morgan';
 
 import errorMiddleware from './middleware/error.middleware.js';
 import addressRoutes from './routes/address.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import bookRoutes from './routes/book.routes.js';
 import cartRoutes from './routes/cart.routes.js';
@@ -34,6 +35,7 @@ app.use('/api/books', bookRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/addresses', addressRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/promo', promoRoutes);
 
