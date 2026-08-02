@@ -24,8 +24,8 @@ class AuthService {
 				name,
 				email,
 				password: hashedPassword,
-				role: 'USER'
-				// cart: { create: {} }
+				role: 'USER',
+				cart: { create: {} }
 			},
 			select: {
 				id: true,
