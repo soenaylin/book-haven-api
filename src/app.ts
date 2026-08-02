@@ -12,6 +12,7 @@ import cartRoutes from './routes/cart.routes.js';
 import notificationRoutes from './routes/notification.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import promoRoutes from './routes/promo.routes.js';
+import wishlistRoutes from './routes/wishlist.routes.js';
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/addresses', addressRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/promo', promoRoutes);
 
