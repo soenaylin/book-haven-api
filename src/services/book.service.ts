@@ -68,16 +68,36 @@ class BookService {
 				take: limit,
 				orderBy: { [sort]: order },
 				include: {
-					category: true
-					// reviews: { select: { rating: true } },
-					// _count: { select: { reviews: true } }
+					category: true,
+					reviews: { select: { rating: true } },
+					_count: { select: { reviews: true } }
 				}
 			}),
 			prisma.book.count({ where })
 		]);
 
+		const booksWithStats = books.map((book) => {
+			const ratings = book.reviews.map((review) => review.rating);
+			const averageRating =
+				ratings.length > 0
+					? Number(
+							(
+								ratings.reduce(
+									(sum, rating) => sum + rating,
+									0
+								) / ratings.length
+							).toFixed(1)
+						)
+					: 0;
+			return {
+				...book,
+				averageRating,
+				numReviews: book._count.reviews
+			};
+		});
+
 		return {
-			books,
+			books: booksWithStats,
 			pagination: {
 				total,
 				page,
@@ -91,14 +111,34 @@ class BookService {
 		const book = await prisma.book.findUnique({
 			where: { id },
 			include: {
-				category: true
+				category: true,
+				reviews: {
+					include: {
+						user: { select: { id: true, name: true } }
+					},
+					orderBy: { createdAt: 'desc' }
+				},
+				_count: { select: { reviews: true } }
 			}
 		});
 
 		if (!book) throw createError('Book not found', 404);
 
+		const ratings = book.reviews.map((review) => review.rating);
+		const averageRating =
+			ratings.length > 0
+				? Number(
+						(
+							ratings.reduce((sum, rating) => sum + rating, 0) /
+							ratings.length
+						).toFixed(1)
+					)
+				: 0;
+
 		return {
-			...book
+			...book,
+			averageRating,
+			numReviews: book._count.reviews
 		};
 	}
 
