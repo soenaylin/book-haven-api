@@ -138,6 +138,8 @@ model RecentlyViewed {
     viewedAt DateTime @default(now())
     user     User     @relation(fields: [userId], references: [id])
     book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, bookId])
 }
 
 model Review {
