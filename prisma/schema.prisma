@@ -7,39 +7,39 @@ datasource db {
 }
 
 model User {
-    id            String         @id @default(uuid())
-    name          String
-    email         String         @unique
-    password      String
-    role          Role           @default(USER)
-    createdAt     DateTime       @default(now())
-    addresses     Address[]
-    cart          Cart?
-    notifications Notification[]
-    orders        Order[]
-    // recentlyViewed RecentlyViewed[]
-    reviews       Review[]
-    wishlist      WishlistItem[]
+    id             String           @id @default(uuid())
+    name           String
+    email          String           @unique
+    password       String
+    role           Role             @default(USER)
+    createdAt      DateTime         @default(now())
+    addresses      Address[]
+    cart           Cart?
+    notifications  Notification[]
+    orders         Order[]
+    recentlyViewed RecentlyViewed[]
+    reviews        Review[]
+    wishlist       WishlistItem[]
 }
 
 model Book {
-    id          String         @id @default(uuid())
-    title       String
-    author      String         @default("Unknown Author")
-    description String
-    price       Float
-    isbn        String?
-    stock       Int
-    coverImage  String
-    categoryId  String
-    createdAt   DateTime       @default(now())
-    salesCount  Int            @default(0)
-    category    Category       @relation(fields: [categoryId], references: [id])
-    cartItems   CartItem[]
-    orderItems  OrderItem[]
-    // recentlyViewed RecentlyViewed[]
-    reviews     Review[]
-    wishlist    WishlistItem[]
+    id             String           @id @default(uuid())
+    title          String
+    author         String           @default("Unknown Author")
+    description    String
+    price          Float
+    isbn           String?
+    stock          Int
+    coverImage     String
+    categoryId     String
+    createdAt      DateTime         @default(now())
+    salesCount     Int              @default(0)
+    category       Category         @relation(fields: [categoryId], references: [id])
+    cartItems      CartItem[]
+    orderItems     OrderItem[]
+    recentlyViewed RecentlyViewed[]
+    reviews        Review[]
+    wishlist       WishlistItem[]
 }
 
 model Category {
@@ -129,6 +129,15 @@ model WishlistItem {
     book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
     @@unique([userId, bookId])
+}
+
+model RecentlyViewed {
+    id       String   @id @default(uuid())
+    userId   String
+    bookId   String
+    viewedAt DateTime @default(now())
+    user     User     @relation(fields: [userId], references: [id])
+    book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
 }
 
 model Review {
