@@ -1,6 +1,7 @@
 import type { OrderStatus, Prisma, Role } from '@prisma/client';
 
 import cartService from './cart.service.js';
+import notificationService from './notification.service.js';
 import promoService from './promo.service.js';
 import prisma from '../config/prisma.js';
 import { createError, toPositiveInt } from '../utils/errors';
@@ -126,7 +127,7 @@ class OrderService {
 			}
 
 			for (const item of itemsToProcess) {
-				await tx.book.update({
+				const updatedBook = await tx.book.update({
 					where: { id: item.bookId },
 					data: {
 						stock: { decrement: item.quantity },
@@ -134,17 +135,30 @@ class OrderService {
 					}
 				});
 
-				// TODO: Send notification to admin when stock is low
+				if (updatedBook.stock <= 5) {
+					await notificationService.notifyAdmins({
+						title: 'Low Stock Alert',
+						message: `"${updatedBook.title}" is running low on stock (${updatedBook.stock} remaining).`,
+						type: 'LOW_STOCK',
+						link: `/admin/books?search=${encodeURIComponent(updatedBook.title)}`
+					});
+				}
 			}
 
 			if (!directItems?.length && cartId) {
-				await tx.cartItem.deleteMany({ where: { cartId } });
+				const cart = await cartService.getCart(userId);
+				await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
 			}
 
 			return newOrder;
 		});
 
-		// TODO: Send notification to admin about new order
+		await notificationService.notifyAdmins({
+			title: 'New Order Placed',
+			message: `A new order of $${totalPrice.toFixed(2)} has been placed.`,
+			type: 'NEW_ORDER',
+			link: `/admin/orders/${order.id}`
+		});
 
 		return order;
 	}
@@ -325,7 +339,14 @@ class OrderService {
 			return updated;
 		});
 
-		// TODO: Send notification
+		await notificationService.createNotification({
+			userId: updatedOrder.userId,
+			title: 'Order Status Updated',
+			message: `Your order #${orderId.slice(0, 8)} status has been updated to ${status}.`,
+			type: 'ORDER_STATUS',
+			link: `/orders/${orderId}`
+		});
+
 		return updatedOrder;
 	}
 }

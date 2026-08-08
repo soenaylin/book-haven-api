@@ -1,3 +1,5 @@
+import type { Server } from 'socket.io';
+
 import prisma from '../config/prisma.js';
 import { createError } from '../utils/errors.js';
 
@@ -12,6 +14,12 @@ type NotificationInput = {
 type AdminNotificationInput = Omit<NotificationInput, 'userId'>;
 
 class NotificationService {
+	private io: Server | null = null;
+
+	setIo(io: Server) {
+		this.io = io;
+	}
+
 	getNotifications(userId: string) {
 		return prisma.notification.findMany({
 			where: { userId },
@@ -24,6 +32,10 @@ class NotificationService {
 		const notification = await prisma.notification.create({
 			data: input
 		});
+
+		this.io
+			?.to(`user:${input.userId}`)
+			.emit('notification:new', notification);
 		return notification;
 	}
 

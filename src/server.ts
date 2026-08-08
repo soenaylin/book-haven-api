@@ -5,12 +5,14 @@ import dotenv from 'dotenv';
 
 import app from './app.js';
 import prisma from './config/prisma.js';
+import { initSocket } from './socket.js';
 
 dotenv.config();
 
 const PORT = Number(process.env.PORT) || 5000;
 
 const server = http.createServer(app);
+initSocket(server);
 
 server.listen(PORT, '0.0.0.0', () => {
 	console.log(`Server running on http://localhost:${PORT}`);
