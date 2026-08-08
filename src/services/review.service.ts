@@ -1,3 +1,4 @@
+import notificationService from './notification.service.js';
 import prisma from '../config/prisma.js';
 import { createError } from '../utils/errors.js';
 
@@ -47,7 +48,13 @@ class ReviewService {
 			include: { user: { select: { id: true, name: true } } }
 		});
 
-		// TODO: Notify book owner about new review
+		await notificationService.notifyAdmins({
+			title: 'New Review Submitted',
+			message: `${review.user.name} reviewed "${book.title}" with ${rating} stars.`,
+			type: 'NEW_REVIEW',
+			link: `/books/${bookId}`
+		});
+
 		return review;
 	}
 

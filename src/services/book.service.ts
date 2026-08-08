@@ -1,5 +1,6 @@
 import { type Prisma } from '@prisma/client';
 
+import notificationService from './notification.service.js';
 import prisma from '../config/prisma.js';
 import { createError, toPositiveInt } from '../utils/errors.js';
 
@@ -176,6 +177,15 @@ class BookService {
 				categoryId: data.categoryId
 			}
 		});
+
+		if (updatedBook.stock <= 5) {
+			await notificationService.notifyAdmins({
+				title: 'Low Stock Alert',
+				message: `"${updatedBook.title}" is running low no stock (${updatedBook.stock} remaining).`,
+				type: 'LOW_STOCK',
+				link: `/admin/books?search=${encodeURIComponent(updatedBook.title)}`
+			});
+		}
 
 		return updatedBook;
 	}
